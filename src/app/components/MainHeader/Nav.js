@@ -19,7 +19,7 @@ const NavButton = ({ path, label }) => {
             <Link href={path} className={isActive ? "text-purple" : ""}>
                 {label}
             </Link>
-            {isActive && <div className="w-full h-1 bg-purple rounded" />}
+            {isActive && <span className="w-full h-1 bg-purple rounded" />}
         </li>
     );
 };
