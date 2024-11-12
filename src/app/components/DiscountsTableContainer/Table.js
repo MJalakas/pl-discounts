@@ -29,7 +29,7 @@ export default function Table({ data }) {
                     return (
                         <tr key={discount.id}>
                             <td>{discount.name}</td>
-                            <td>{discount.appliesTo}</td>
+                            <td>{discount.category}</td>
                             <td>{timePeriod}</td>
                             <td>{discount.discountAmount}</td>
                             <td>{/* Edit button */}</td>

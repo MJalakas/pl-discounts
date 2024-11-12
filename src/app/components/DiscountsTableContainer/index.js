@@ -56,7 +56,7 @@ export default function DiscountsTableContainer() {
     }, [currentPage]);
 
     return (
-        <div className="mt-4">
+        <div className="mt-4 flex flex-col gap-5">
             <FilterBar />
             <Tabs tabData={tabData} onTabChange={setActiveTab} />
             <Table data={discounts} />

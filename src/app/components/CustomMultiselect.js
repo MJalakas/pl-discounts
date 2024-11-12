@@ -12,9 +12,9 @@ export default function CustomMultiselect({ placeholder, options, onChange }) {
     });
 
     return (
-        <div className="relative w-full max-w-[284px]" ref={innerRef}>
+        <div className="relative w-[284px] max-h-10" ref={innerRef}>
             <div
-                className="flex justify-between items-center bg-white rounded-md border-[#D6D2E1] border px-4 py-3 w-full text-sm text-[#626262] leading-4 text-left hover:cursor-pointer"
+                className="flex justify-between items-center bg-white rounded-md border-[#D6D2E1] border px-4 py-3 w-full h-full text-sm text-[#626262] leading-4 text-left hover:cursor-pointer"
                 onClick={() => setIsOpen(!isOpen)}
             >
                 {/* Display the placeholder or if selected, create a string of the options to display. */}
