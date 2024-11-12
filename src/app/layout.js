@@ -1,5 +1,5 @@
 import "@/app/globals.css";
-import { Roboto } from "next/font/google";
+import { roboto } from "@/app/fonts";
 import MainHeader from "@/app/components/MainHeader";
 import Breadcrumbs from "@/app/components/Breadcrumbs";
 
@@ -7,12 +7,6 @@ export const metadata = {
     title: "Piletilevi Back Office",
     description: "Only for demo purposes.",
 };
-
-const roboto = Roboto({
-    weight: "400",
-    subsets: ["latin"],
-    display: "swap",
-});
 
 export default function RootLayout({ children }) {
     return (
