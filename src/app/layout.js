@@ -1,6 +1,7 @@
 import "@/app/globals.css";
 import { Roboto } from "next/font/google";
 import MainHeader from "@/app/components/MainHeader";
+import Breadcrumbs from "@/app/components/Breadcrumbs";
 
 export const metadata = {
     title: "Piletilevi Back Office",
@@ -19,7 +20,10 @@ export default function RootLayout({ children }) {
             <body className="w-full h-[100dvh] min-h-[100dvh]">
                 <MainHeader />
                 {/* 5rem in calc is the header height. This way main content will always take up the rest of the screen without a scrollbar by default. */}
-                <main className="px-32 py-4 w-full min-h-[calc(100%-5rem)] ">{children}</main>
+                <main className="flex flex-col gap-8 px-32 py-4 w-full min-h-[calc(100%-5rem)] ">
+                    <Breadcrumbs />
+                    {children}
+                </main>
             </body>
         </html>
     );
