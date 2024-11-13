@@ -1,5 +1,4 @@
 "use client";
-import { useState, useEffect } from "react";
 import CustomMultiselect from "@/app/components/CustomMultiselect";
 
 export default function AppliesToSelect({ listStyles, handleAppliesToChange, categoryOptions }) {

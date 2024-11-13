@@ -1,14 +1,29 @@
 "use client";
-
+import { useState } from "react";
 import FilledButton from "../FilledButton";
 import CloseButton from "../CloseButton";
 import AppliesToSelect from "./AppliesToSelect";
 
 export default function CreateDiscountModal({ isOpen, onClose }) {
+    const [categoryOptions, setCategoryOptions] = useState([
+        { name: "All events", selected: false },
+        { name: "Ticket type", selected: false },
+        { name: "Event", selected: false },
+        { name: "Series", selected: false },
+    ]);
+
     const addDiscount = () => {
         // If only I had an endpoint to post to...
 
         onClose();
+    };
+
+    const handleAppliesToChange = (option) => {
+        setCategoryOptions((prevState) =>
+            prevState.map((category) =>
+                category.name === option.name ? { ...category, selected: !category.selected } : category
+            )
+        );
     };
 
     if (!isOpen) {
@@ -35,7 +50,11 @@ export default function CreateDiscountModal({ isOpen, onClose }) {
                     </div>
 
                     <div className="w-full flex gap-4">
-                        <AppliesToSelect listStyles={"drop-shadow-lg"} />
+                        <AppliesToSelect
+                            listStyles={"drop-shadow-lg"}
+                            handleAppliesToChange={handleAppliesToChange}
+                            categoryOptions={categoryOptions}
+                        />
                         <FilledButton onClick={addDiscount}>ADD</FilledButton>
                     </div>
                 </form>
