@@ -10,6 +10,7 @@ import FilledButton from "@/app/components/FilledButton";
 import CreateDiscountModal from "./CreateDiscountModal";
 
 export default function DiscountsTableContainer() {
+    const [rowsPerPage, setRowsPerPage] = useState(10);
     const [tabData, setTabData] = useState([
         { name: "All", count: 38, active: true },
         { name: "Currently active", count: 22, active: false },
@@ -17,10 +18,20 @@ export default function DiscountsTableContainer() {
         { name: "Archived", count: 2, active: false },
     ]);
     const [allDiscounts, setAllDiscounts] = useState([]);
-    const [pageDiscounts, setPageDiscounts] = useState([]);
     const [filteredDiscounts, setFilteredDiscounts] = useState([]);
+    const [pageDiscounts, setPageDiscounts] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [discountModalOpen, setDiscountModalOpen] = useState(false);
+
+    // Sort by descending end date. Just to have any order to it.
+    const sortByEndTime = (discounts) => {
+        return discounts.sort((a, b) => {
+            const dateA = new Date(a.endDate);
+            const dateB = new Date(b.endDate);
+
+            return dateB - dateA;
+        });
+    };
 
     const setActiveTab = (tabName) => {
         setTabData(
@@ -99,8 +110,11 @@ export default function DiscountsTableContainer() {
                 const response = await fetch(`https://api.intra.piletilevi.ee/v1/discounts`);
                 const data = await response.json();
 
-                setAllDiscounts(data);
                 updateTabNames(data);
+
+                let sortedData = sortByEndTime(data);
+
+                setAllDiscounts(sortedData);
             } catch (error) {
                 console.error("Error fetching discounts:", error);
             }
@@ -123,7 +137,11 @@ export default function DiscountsTableContainer() {
             <FilterBar />
             <Tabs tabData={tabData} onTabChange={setActiveTab} />
             <Table data={pageDiscounts} />
-            <Pagination currentPage={currentPage} totalPages={5} onPageChange={setPage} />
+            <Pagination
+                currentPage={currentPage}
+                totalPages={Math.ceil(allDiscounts.length / rowsPerPage)}
+                onPageChange={setPage}
+            />
             <CreateDiscountModal isOpen={discountModalOpen} onClose={closeDiscountModal} />
         </div>
     );
