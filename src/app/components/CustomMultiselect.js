@@ -1,15 +1,19 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import DropdownArrow from "@/app/assets/DropdownArrow.svg";
 import Image from "next/image";
 import useOuterClick from "@/app/hooks/useOuterClick";
 
 export default function CustomMultiselect({ placeholder, options, onChange, listStyles = "" }) {
     const [isOpen, setIsOpen] = useState(false);
-    const selectedOptions = options.filter((option) => option.selected).map((option) => option.name);
+    const [selectedOptions, setSelectedOptions] = useState([]);
     const innerRef = useOuterClick((e) => {
         setIsOpen(false);
     });
+
+    useEffect(() => {
+        setSelectedOptions(options.filter((option) => option.selected).map((option) => option.name));
+    }, [options]);
 
     return (
         <div className="relative w-full max-h-10" ref={innerRef}>

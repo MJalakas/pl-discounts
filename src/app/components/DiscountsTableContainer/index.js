@@ -12,12 +12,13 @@ import CreateDiscountModal from "./CreateDiscountModal";
 export default function DiscountsTableContainer() {
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [tabData, setTabData] = useState([
-        { name: "All", count: 38, active: true },
-        { name: "Currently active", count: 22, active: false },
-        { name: "Upcoming", count: 14, active: false },
-        { name: "Archived", count: 2, active: false },
+        { name: "All", count: 0, active: true },
+        { name: "Currently active", count: 0, active: false },
+        { name: "Upcoming", count: 0, active: false },
+        { name: "Archived", count: 0, active: false },
     ]);
-    const [allDiscounts, setAllDiscounts] = useState([]);
+    const [filters, setFilters] = useState({ search: "", appliesTo: [], tab: "All" });
+    const [allDiscounts, setAllDiscounts] = useState({ active: [], upcoming: [], archived: [] });
     const [filteredDiscounts, setFilteredDiscounts] = useState([]);
     const [pageDiscounts, setPageDiscounts] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -40,6 +41,16 @@ export default function DiscountsTableContainer() {
                 active: tab.name === tabName,
             }))
         );
+
+        setFilters({ ...filters, tab: tabName });
+    };
+
+    const handleFilterApply = (search, appliesTo) => {
+        setFilters((prevState) => ({
+            ...prevState,
+            search,
+            appliesTo,
+        }));
     };
 
     const setPage = (pageNumber) => {
@@ -62,32 +73,46 @@ export default function DiscountsTableContainer() {
         return discounts.slice(startIndex, endIndex);
     };
 
-    // Compare discount dates to current date determine which tab it belongs to.
-    const updateTabNames = (discounts) => {
+    // Group the discounts by the tabs.
+    const groupDiscounts = (discounts) => {
         const currentDate = new Date();
-        let activeCount = 0;
-        let upcomingCount = 0;
-        let archivedCount = 0;
+        const active = [];
+        const upcoming = [];
+        const archived = [];
 
         discounts.forEach((discount) => {
             const startDate = new Date(discount.startDate);
             const endDate = new Date(discount.endDate);
 
             if (startDate <= currentDate && endDate >= currentDate) {
-                activeCount++;
+                active.push(discount);
             } else if (startDate > currentDate) {
-                upcomingCount++;
+                upcoming.push(discount);
             } else if (endDate < currentDate) {
-                archivedCount++;
+                archived.push(discount);
             }
         });
 
+        return { active, upcoming, archived };
+    };
+
+    const updateTabNames = (groupedDiscounts, activeTab = "All") => {
+        const { active, upcoming, archived } = groupedDiscounts;
+        const combinedDiscounts = active.concat(upcoming, archived);
+
         setTabData([
-            { name: "All", count: discounts.length, active: true },
-            { name: "Currently active", count: activeCount, active: false },
-            { name: "Upcoming", count: upcomingCount, active: false },
-            { name: "Archived", count: archivedCount, active: false },
+            { name: "All", count: combinedDiscounts.length, active: activeTab === "All" },
+            { name: "Currently active", count: active.length, active: activeTab === "Currently active" },
+            { name: "Upcoming", count: upcoming.length, active: activeTab === "Upcoming" },
+            { name: "Archived", count: archived.length, active: activeTab === "Archived" },
         ]);
+
+        return { active, upcoming, archived };
+    };
+
+    // Clear button will clear all but the tab filter.
+    const clearFilters = () => {
+        setFilters({ search: "", appliesTo: [], tab: filters.tab });
     };
 
     // Fetch all discounts on render.
@@ -110,11 +135,14 @@ export default function DiscountsTableContainer() {
                 const response = await fetch(`https://api.intra.piletilevi.ee/v1/discounts`);
                 const data = await response.json();
 
-                updateTabNames(data);
+                const groupedData = groupDiscounts(data);
+                updateTabNames(groupedData);
 
-                let sortedData = sortByEndTime(data);
-
-                setAllDiscounts(sortedData);
+                setAllDiscounts({
+                    active: sortByEndTime(groupedData.active),
+                    upcoming: sortByEndTime(groupedData.upcoming),
+                    archived: sortByEndTime(groupedData.archived),
+                });
             } catch (error) {
                 console.error("Error fetching discounts:", error);
             }
@@ -123,10 +151,51 @@ export default function DiscountsTableContainer() {
         fetchDiscounts();
     }, []);
 
-    // Update the displayed discounts when the current page changes.
+    // Update filtered discounts when filters change.
     useEffect(() => {
-        setPageDiscounts(paginateDiscounts(allDiscounts, currentPage));
-    }, [allDiscounts, currentPage]);
+        if (!filters || !allDiscounts) return;
+
+        const { search, appliesTo, tab } = filters;
+
+        // Start off with all discounts in one array and we'll filter from here.
+        let filtered = allDiscounts.active.concat(allDiscounts.upcoming, allDiscounts.archived);
+
+        // Search term filter. Partial match for now, but ideally would include something more fuzzy.
+        if (search) {
+            filtered = filtered.filter((discount) => discount.name.toLowerCase().includes(search.toLowerCase()));
+        }
+
+        // Category filter.
+        if (appliesTo.length > 0) {
+            filtered = filtered.filter((discount) => appliesTo.includes(discount.category));
+        }
+
+        // Regroup and recalculate tab counts before filtering by them.
+        const groupedDiscounts = groupDiscounts(filtered);
+        updateTabNames(groupedDiscounts, tab);
+
+        switch (tab) {
+            case "Currently active":
+                filtered = groupedDiscounts.active;
+                break;
+            case "Upcoming":
+                filtered = groupedDiscounts.upcoming;
+                break;
+            case "Archived":
+                filtered = groupedDiscounts.archived;
+                break;
+            default:
+                break;
+        }
+
+        setFilteredDiscounts(filtered);
+
+        // Reset the current page to 1 when filters change.
+        setCurrentPage(1);
+
+        // Update the displayed discounts.
+        setPageDiscounts(paginateDiscounts(filtered, 1));
+    }, [filters, allDiscounts]);
 
     return (
         <div className="mt-4 flex flex-col gap-5">
@@ -134,12 +203,12 @@ export default function DiscountsTableContainer() {
                 <h1 className={`${montserrat.className} font-bold text-4xl leading-[3rem]`}>Discounts</h1>
                 <FilledButton onClick={openDiscountModal}>CREATE NEW DISCOUNT</FilledButton>
             </div>
-            <FilterBar />
+            <FilterBar handleFilterApply={handleFilterApply} clearFilters={clearFilters} />
             <Tabs tabData={tabData} onTabChange={setActiveTab} />
             <Table data={pageDiscounts} />
             <Pagination
                 currentPage={currentPage}
-                totalPages={Math.ceil(allDiscounts.length / rowsPerPage)}
+                totalPages={Math.ceil(filteredDiscounts.length / rowsPerPage)}
                 onPageChange={setPage}
             />
             <CreateDiscountModal isOpen={discountModalOpen} onClose={closeDiscountModal} />
