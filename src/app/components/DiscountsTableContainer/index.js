@@ -11,7 +11,8 @@ import CreateDiscountModal from "./CreateDiscountModal";
 
 export default function DiscountsTableContainer() {
     const [tabData, setTabData] = useState([
-        { name: "Currently active", count: 22, active: true },
+        { name: "All", count: 38, active: true },
+        { name: "Currently active", count: 22, active: false },
         { name: "Upcoming", count: 14, active: false },
         { name: "Archived", count: 2, active: false },
     ]);
@@ -71,7 +72,8 @@ export default function DiscountsTableContainer() {
         });
 
         setTabData([
-            { name: "Currently active", count: activeCount, active: true },
+            { name: "All", count: discounts.length, active: true },
+            { name: "Currently active", count: activeCount, active: false },
             { name: "Upcoming", count: upcomingCount, active: false },
             { name: "Archived", count: archivedCount, active: false },
         ]);
