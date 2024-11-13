@@ -18,15 +18,15 @@ export default function Table({ data }) {
     };
 
     return (
-        <div className="w-full bg-white rounded-md border border-[#EAE9EF] custom-drop-shadow py-7 px-5 text-sm leading-4">
+        <div className="w-full bg-white rounded-md border border-[#EAE9EF] custom-drop-shadow py-7 px-5 text-sm leading-4 min-w-[300px]">
             <table className="w-full border-collapse">
                 <thead>
                     <tr className="discount-table-header-row border-b border-[#D6D2E1]">
-                        <th className="text-left">Name</th>
-                        <th className="text-left">Applies to</th>
-                        <th className="text-left">Time period</th>
-                        <th className="text-left">Discount amount</th>
-                        <th className="text-left">{/* Edit button */}</th>
+                        <th>Name</th>
+                        <th>Applies to</th>
+                        <th>Time period</th>
+                        <th className="sm:table-cell hidden">Discount amount</th>
+                        <th className="md:table-cell hidden">{/* Edit button */}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -48,9 +48,11 @@ export default function Table({ data }) {
                             <tr key={discount.id} className={rowClass}>
                                 <td className="text-purple-light font-bold">{discount.name}</td>
                                 <td>{discount.category}</td>
-                                <td className="w-full max-w-0 overflow-hidden text-ellipsis">{timePeriod}</td>
-                                <td>{discount.discountAmount + "€"}</td>
-                                <td className="flex justify-end items-center my-0.5 !min-w-0">{PencilButton()}</td>
+                                <td className="md:w-full md:max-w-0 overflow-hidden text-ellipsis">{timePeriod}</td>
+                                <td className="sm:table-cell hidden">{discount.discountAmount + "€"}</td>
+                                <td className="md:flex hidden justify-end items-center my-0.5 !min-w-0">
+                                    {PencilButton()}
+                                </td>
                             </tr>
                         );
                     })}

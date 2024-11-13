@@ -27,7 +27,7 @@ const NavButton = ({ path, label }) => {
 
 export default function MainHeaderNav() {
     return (
-        <nav className="w-full px-14 font-bold text-lg leading-6">
+        <nav className="w-full px-14 font-bold text-lg leading-6 md:block hidden">
             <ul className="flex gap-11 h-full">
                 {navLinks.map((navLink) => (
                     <NavButton key={navLink.path} path={navLink.path} label={navLink.label} />

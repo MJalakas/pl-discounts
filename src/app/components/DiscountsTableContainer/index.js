@@ -69,7 +69,7 @@ export default function DiscountsTableContainer() {
 
     return (
         <div className="mt-4 flex flex-col gap-5">
-            <div className="w-full flex justify-between">
+            <div className="w-full flex justify-between gap-4">
                 <h1 className={`${montserrat.className} font-bold text-4xl leading-[3rem]`}>Discounts</h1>
                 <FilledButton onClick={openDiscountModal}>CREATE NEW DISCOUNT</FilledButton>
             </div>

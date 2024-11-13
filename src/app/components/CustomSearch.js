@@ -5,7 +5,7 @@ import CloseButton from "./CloseButton";
 
 export default function CustomSearch() {
     return (
-        <div className="flex h-10 w-[284px] justify-between items-center bg-white rounded-md border-[#D6D2E1] border text-sm text-[#626262] leading-4 text-left">
+        <div className="flex h-10 w-[284px] justify-between items-center bg-white rounded-md border-[#D6D2E1] border text-sm/4 text-[#626262] text-left">
             <input
                 type="text"
                 placeholder="Discount name, code"

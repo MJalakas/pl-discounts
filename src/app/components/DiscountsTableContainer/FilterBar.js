@@ -4,8 +4,8 @@ import AppliesToSelect from "./AppliesToSelect";
 
 export default function FilterBar() {
     return (
-        <div className="w-full flex h-10 gap-5">
-            <div className="flex gap-3">
+        <div className="w-full flex lg:flex-row lg:items-start flex-col items-center lg:h-10 gap-5">
+            <div className="flex gap-3 lg:flex-row flex-col">
                 <CustomSearch placeholder="Discount name, code" />
                 <div className="w-[284px]">
                     <AppliesToSelect listStyles={"custom-drop-shadow"} />

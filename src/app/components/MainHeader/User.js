@@ -4,7 +4,7 @@ import Image from "next/image";
 export default function MainHeaderUser() {
     // Non-functional for demo, of course.
     return (
-        <div className="flex w-full justify-end gap-8 max-h-6">
+        <div className="md:flex hidden w-full justify-end gap-8 max-h-6">
             <div className="flex w-full justify-end gap-2">
                 <div>EN</div>
                 <div className="flex items-center w-[10px]">
