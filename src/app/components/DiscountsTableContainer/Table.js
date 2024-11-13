@@ -11,7 +11,7 @@ export default function Table({ data }) {
 
     const PencilButton = () => {
         return (
-            <button className="border border-[#D6D2E1] rounded-md p-2">
+            <button className="border border-[#D6D2E1] rounded-md p-2 hover:bg-gray-500 hover:bg-opacity-10">
                 <Image src={PencilIcon} alt="Edit button" />
             </button>
         );

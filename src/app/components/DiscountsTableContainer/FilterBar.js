@@ -12,10 +12,12 @@ export default function FilterBar() {
                 </div>
             </div>
             <div className="flex gap-5">
-                <button className="py-2 px-5 border-2 border-purple rounded-md font-bold text-purple text-sm">
+                <button className="py-2 px-5 border-2 border-purple rounded-md font-bold text-purple text-sm/4 hover:bg-gray-500 hover:bg-opacity-5">
                     SEARCH
                 </button>
-                <button className="p-3 font-bold text-[#626262] text-sm">Clear All</button>
+                <button className="p-3 font-bold text-[#626262] text-sm/4 hover:bg-gray-500 hover:bg-opacity-5">
+                    Clear All
+                </button>
             </div>
         </div>
     );

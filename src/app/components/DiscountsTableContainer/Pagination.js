@@ -11,7 +11,7 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
             <button
                 onClick={() => onPageChange(currentPage - 1)}
                 disabled={currentPage === 1}
-                className="h-8 w-8 rounded-md bg-white flex items-center justify-center border border-[#D6D2E1]"
+                className="h-8 w-8 rounded-md bg-white flex items-center justify-center border border-[#D6D2E1] hover:bg-gray-500 hover:bg-opacity-10"
             >
                 <Image src={ArrowLeft} alt="Previous page" />
             </button>
@@ -27,7 +27,7 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
             <button
                 onClick={() => onPageChange(currentPage + 1)}
                 disabled={currentPage === totalPages}
-                className="h-8 w-8 rounded-md bg-white flex items-center justify-center border border-[#D6D2E1]"
+                className="h-8 w-8 rounded-md bg-white flex items-center justify-center border border-[#D6D2E1] hover:bg-gray-500 hover:bg-opacity-10"
             >
                 <Image src={ArrowRight} alt="Next page" />
             </button>

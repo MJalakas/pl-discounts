@@ -33,12 +33,10 @@ export default function DiscountsTableContainer() {
     };
 
     const openDiscountModal = () => {
-        console.log("Opening discount modal");
         setDiscountModalOpen(true);
     };
 
     const closeDiscountModal = () => {
-        console.log("Closing discount modal");
         setDiscountModalOpen(false);
     };
 

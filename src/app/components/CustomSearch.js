@@ -1,6 +1,7 @@
-import CloseIcon from "@/app/assets/CloseIcon.svg";
+"use client";
 import SearchIcon from "@/app/assets/SearchIcon.svg";
 import Image from "next/image";
+import CloseButton from "./CloseButton";
 
 export default function CustomSearch() {
     return (
@@ -10,10 +11,11 @@ export default function CustomSearch() {
                 placeholder="Discount name, code"
                 className="h-full w-full bg-transparent px-2 placeholder:text-sm placeholder:text-[#626262]"
             />
-            <button className="h-full flex items-center border-r border-r-[#D6D2E1] p-3">
-                <Image src={CloseIcon} alt="Close icon" className="min-w-4" />
-            </button>
-            <button className="h-full flex items-center p-3">
+            <div className="w-fit h-fit border-r border-r-[#D6D2E1]">
+                <CloseButton />
+            </div>
+
+            <button className="h-full flex items-center p-3 hover:invert">
                 <Image src={SearchIcon} alt="Search icon" className="min-w-4" />
             </button>
         </div>
