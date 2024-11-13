@@ -1,10 +1,13 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { montserrat } from "@/app/fonts";
 import Tabs from "./Tabs";
 import Table from "./Table";
 import FilterBar from "./FilterBar";
 import Pagination from "./Pagination";
+import FilledButton from "@/app/components/FilledButton";
+import CreateDiscountModal from "./CreateDiscountModal";
 
 export default function DiscountsTableContainer() {
     const [tabData, setTabData] = useState([
@@ -14,6 +17,7 @@ export default function DiscountsTableContainer() {
     ]);
     const [discounts, setDiscounts] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
+    const [discountModalOpen, setDiscountModalOpen] = useState(false);
 
     const setActiveTab = (tabName) => {
         setTabData(
@@ -26,6 +30,16 @@ export default function DiscountsTableContainer() {
 
     const setPage = (pageNumber) => {
         setCurrentPage(pageNumber);
+    };
+
+    const openDiscountModal = () => {
+        console.log("Opening discount modal");
+        setDiscountModalOpen(true);
+    };
+
+    const closeDiscountModal = () => {
+        console.log("Closing discount modal");
+        setDiscountModalOpen(false);
     };
 
     useEffect(() => {
@@ -57,10 +71,15 @@ export default function DiscountsTableContainer() {
 
     return (
         <div className="mt-4 flex flex-col gap-5">
+            <div className="w-full flex justify-between">
+                <h1 className={`${montserrat.className} font-bold text-4xl leading-[3rem]`}>Discounts</h1>
+                <FilledButton onClick={openDiscountModal}>CREATE NEW DISCOUNT</FilledButton>
+            </div>
             <FilterBar />
             <Tabs tabData={tabData} onTabChange={setActiveTab} />
             <Table data={discounts} />
             <Pagination currentPage={currentPage} totalPages={5} onPageChange={setPage} />
+            <CreateDiscountModal isOpen={discountModalOpen} onClose={closeDiscountModal} />
         </div>
     );
 }

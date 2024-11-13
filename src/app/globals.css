@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Some default styles */
+h2 {
+    font-size: 28px;
+    line-height: 32px;
+    font-weight: 700;
+    color: #212a4f;
+}
+
 /* Custom tailwind classes to match with the design */
 .custom-drop-shadow {
     box-shadow: 0px 4px 20px 0px rgba(214, 223, 229, 1);
