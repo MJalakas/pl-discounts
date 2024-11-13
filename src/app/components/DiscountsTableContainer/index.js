@@ -17,6 +17,7 @@ export default function DiscountsTableContainer() {
     ]);
     const [allDiscounts, setAllDiscounts] = useState([]);
     const [pageDiscounts, setPageDiscounts] = useState([]);
+    const [filteredDiscounts, setFilteredDiscounts] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [discountModalOpen, setDiscountModalOpen] = useState(false);
 
@@ -49,6 +50,33 @@ export default function DiscountsTableContainer() {
         return discounts.slice(startIndex, endIndex);
     };
 
+    // Compare discount dates to current date determine which tab it belongs to.
+    const updateTabNames = (discounts) => {
+        const currentDate = new Date();
+        let activeCount = 0;
+        let upcomingCount = 0;
+        let archivedCount = 0;
+
+        discounts.forEach((discount) => {
+            const startDate = new Date(discount.startDate);
+            const endDate = new Date(discount.endDate);
+
+            if (startDate <= currentDate && endDate >= currentDate) {
+                activeCount++;
+            } else if (startDate > currentDate) {
+                upcomingCount++;
+            } else if (endDate < currentDate) {
+                archivedCount++;
+            }
+        });
+
+        setTabData([
+            { name: "Currently active", count: activeCount, active: true },
+            { name: "Upcoming", count: upcomingCount, active: false },
+            { name: "Archived", count: archivedCount, active: false },
+        ]);
+    };
+
     // Fetch all discounts on render.
     useEffect(() => {
         /* Discounts example:
@@ -70,6 +98,7 @@ export default function DiscountsTableContainer() {
                 const data = await response.json();
 
                 setAllDiscounts(data);
+                updateTabNames(data);
             } catch (error) {
                 console.error("Error fetching discounts:", error);
             }
