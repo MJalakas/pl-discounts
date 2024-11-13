@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+// Centralize the nav links to here, so they're easier to change.
 const navLinks = [
     { path: "/", label: "Back office" },
     { path: "/reports", label: "Reports" },
@@ -26,7 +27,7 @@ const NavButton = ({ path, label }) => {
 
 export default function MainHeaderNav() {
     return (
-        <nav className="w-full px-14 font-bold text-lg">
+        <nav className="w-full px-14 font-bold text-lg leading-6">
             <ul className="flex gap-11 h-full">
                 {navLinks.map((navLink) => (
                     <NavButton key={navLink.path} path={navLink.path} label={navLink.label} />
