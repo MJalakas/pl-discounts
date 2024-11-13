@@ -22,6 +22,7 @@ export default function DiscountsTableContainer() {
     const [filteredDiscounts, setFilteredDiscounts] = useState([]);
     const [pageDiscounts, setPageDiscounts] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
+    const [pageCount, setPageCount] = useState(0);
     const [discountModalOpen, setDiscountModalOpen] = useState(false);
 
     // Sort by descending end date. Just to have any order to it.
@@ -190,12 +191,17 @@ export default function DiscountsTableContainer() {
 
         setFilteredDiscounts(filtered);
 
+        // Update the page count. Math.ceil to round up to an integer.
+        setPageCount(Math.ceil(filtered.length / rowsPerPage));
+
         // Reset the current page to 1 when filters change.
         setCurrentPage(1);
-
-        // Update the displayed discounts.
-        setPageDiscounts(paginateDiscounts(filtered, 1));
     }, [filters, allDiscounts]);
+
+    // Update the displayed discounts when the current page changes.
+    useEffect(() => {
+        setPageDiscounts(paginateDiscounts(filteredDiscounts, currentPage));
+    }, [currentPage, filteredDiscounts]);
 
     return (
         <div className="mt-4 flex flex-col gap-5">
@@ -206,11 +212,7 @@ export default function DiscountsTableContainer() {
             <FilterBar handleFilterApply={handleFilterApply} clearFilters={clearFilters} />
             <Tabs tabData={tabData} onTabChange={setActiveTab} />
             <Table data={pageDiscounts} />
-            <Pagination
-                currentPage={currentPage}
-                totalPages={Math.ceil(filteredDiscounts.length / rowsPerPage)}
-                onPageChange={setPage}
-            />
+            <Pagination currentPage={currentPage} totalPages={pageCount} onPageChange={setPage} />
             <CreateDiscountModal isOpen={discountModalOpen} onClose={closeDiscountModal} />
         </div>
     );
