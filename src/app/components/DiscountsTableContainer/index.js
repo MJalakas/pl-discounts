@@ -15,7 +15,8 @@ export default function DiscountsTableContainer() {
         { name: "Upcoming", count: 14, active: false },
         { name: "Archived", count: 2, active: false },
     ]);
-    const [discounts, setDiscounts] = useState([]);
+    const [allDiscounts, setAllDiscounts] = useState([]);
+    const [pageDiscounts, setPageDiscounts] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [discountModalOpen, setDiscountModalOpen] = useState(false);
 
@@ -40,6 +41,15 @@ export default function DiscountsTableContainer() {
         setDiscountModalOpen(false);
     };
 
+    const paginateDiscounts = (discounts, page) => {
+        const itemsPerPage = 10;
+        const startIndex = (page - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+
+        return discounts.slice(startIndex, endIndex);
+    };
+
+    // Fetch all discounts on render.
     useEffect(() => {
         /* Discounts example:
         [
@@ -58,14 +68,20 @@ export default function DiscountsTableContainer() {
             try {
                 const response = await fetch(`https://api.intra.piletilevi.ee/v1/discounts`);
                 const data = await response.json();
-                setDiscounts(data);
+
+                setAllDiscounts(data);
             } catch (error) {
                 console.error("Error fetching discounts:", error);
             }
         };
 
         fetchDiscounts();
-    }, [currentPage]);
+    }, []);
+
+    // Update the displayed discounts when the current page changes.
+    useEffect(() => {
+        setPageDiscounts(paginateDiscounts(allDiscounts, currentPage));
+    }, [allDiscounts, currentPage]);
 
     return (
         <div className="mt-4 flex flex-col gap-5">
@@ -75,7 +91,7 @@ export default function DiscountsTableContainer() {
             </div>
             <FilterBar />
             <Tabs tabData={tabData} onTabChange={setActiveTab} />
-            <Table data={discounts} />
+            <Table data={pageDiscounts} />
             <Pagination currentPage={currentPage} totalPages={5} onPageChange={setPage} />
             <CreateDiscountModal isOpen={discountModalOpen} onClose={closeDiscountModal} />
         </div>
