@@ -19,8 +19,15 @@ h2 {
 tr.discount-table-body-row > td {
     vertical-align: top;
     padding: 0.5rem;
+    white-space: nowrap;
 }
 
 tr.discount-table-header-row > th {
     padding: 0.25rem 0.5rem;
+}
+
+@media (min-width: 1168px) {
+    tr.discount-table-body-row > td {
+        min-width: 200px;
+    }
 }

@@ -11,7 +11,7 @@ export default function Table({ data }) {
 
     const PencilButton = () => {
         return (
-            <button className="border border-[#D6D2E1] rounded-md p-2 hover:bg-gray-500 hover:bg-opacity-10">
+            <button className="border border-[#D6D2E1] rounded-md p-2 hover:bg-gray-500 hover:bg-opacity-10 w-8">
                 <Image src={PencilIcon} alt="Edit button" />
             </button>
         );
@@ -48,9 +48,9 @@ export default function Table({ data }) {
                             <tr key={discount.id} className={rowClass}>
                                 <td className="text-purple-light font-bold">{discount.name}</td>
                                 <td>{discount.category}</td>
-                                <td>{timePeriod}</td>
+                                <td className="w-full max-w-0 overflow-hidden text-ellipsis">{timePeriod}</td>
                                 <td>{discount.discountAmount + "€"}</td>
-                                <td className="flex justify-end items-center my-0.5">{PencilButton()}</td>
+                                <td className="flex justify-end items-center my-0.5 !min-w-0">{PencilButton()}</td>
                             </tr>
                         );
                     })}
