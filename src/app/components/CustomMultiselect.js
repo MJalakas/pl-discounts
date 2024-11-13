@@ -22,7 +22,7 @@ export default function CustomMultiselect({ placeholder, options, onChange }) {
                 <Image src={DropdownArrow} alt="Dropdown arrow" />
             </div>
             {isOpen && (
-                <ul className="absolute w-full rounded-md rounded-t-md shadow-2xl">
+                <ul className="absolute w-full rounded-md rounded-t-md custom-drop-shadow">
                     {options.map((option) => (
                         <li
                             key={option.name}
