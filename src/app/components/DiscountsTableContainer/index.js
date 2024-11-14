@@ -54,6 +54,19 @@ export default function DiscountsTableContainer() {
         }));
     };
 
+    // Since we don't have a backend to save data, we'll just save the new values for the current table page.
+    const handleEditRowSave = (row) => {
+        const updatedDiscounts = pageDiscounts.map((discount) => {
+            if (discount.id === row.id) {
+                return { ...discount, ...row };
+            }
+
+            return discount;
+        });
+
+        setPageDiscounts(updatedDiscounts);
+    };
+
     const setPage = (pageNumber) => {
         setCurrentPage(pageNumber);
     };
@@ -204,16 +217,18 @@ export default function DiscountsTableContainer() {
     }, [currentPage, filteredDiscounts]);
 
     return (
-        <div className="mt-4 flex flex-col gap-5">
+        <div className="flex flex-col gap-3">
             <div className="w-full flex justify-between gap-4">
                 <h1 className={`${montserrat.className} font-bold text-4xl leading-[3rem]`}>Discounts</h1>
                 <FilledButton onClick={openDiscountModal}>CREATE NEW DISCOUNT</FilledButton>
             </div>
-            <FilterBar handleFilterApply={handleFilterApply} clearFilters={clearFilters} />
-            <Tabs tabData={tabData} onTabChange={setActiveTab} />
-            <Table data={pageDiscounts} />
-            <Pagination currentPage={currentPage} totalPages={pageCount} onPageChange={setPage} />
-            <CreateDiscountModal isOpen={discountModalOpen} onClose={closeDiscountModal} />
+            <div className="flex flex-col gap-5">
+                <FilterBar handleFilterApply={handleFilterApply} clearFilters={clearFilters} />
+                <Tabs tabData={tabData} onTabChange={setActiveTab} />
+                <Table data={pageDiscounts} onRowSave={handleEditRowSave} />
+                <Pagination currentPage={currentPage} totalPages={pageCount} onPageChange={setPage} />
+                <CreateDiscountModal isOpen={discountModalOpen} onClose={closeDiscountModal} />
+            </div>
         </div>
     );
 }

@@ -15,6 +15,17 @@ h2 {
     box-shadow: 0px 4px 20px 0px rgba(214, 223, 229, 1);
 }
 
+/* Remove arrows from number input */
+@layer base {
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"] {
+        -webkit-appearance: none;
+        margin: 0;
+        -moz-appearance: textfield !important;
+    }
+}
+
 /* Since we have very little actual CSS, we'll just use global styles instead of modules. */
 tr.discount-table-body-row > td {
     vertical-align: top;
