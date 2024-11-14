@@ -42,6 +42,7 @@ Besides the tooling & UI libraries I've already mentioned, here's what should be
 -   "Theme" approach to styling - more default and reusable styles
 -   Separated some utility/helper functions for better code readability
 -   Probably some more comments
+-   And of course tests!
 
 ## App description
 
