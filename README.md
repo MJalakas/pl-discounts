@@ -38,6 +38,7 @@ Besides the tooling & UI libraries I've already mentioned, here's what should be
 
 -   More feedback to user, e.g. loading views and success/error messages
 -   More input validation (forms are only client-side now, so doesn't matter much)
+-   More error handling
 -   More reusable components (Buttons, inputs etc.)
 -   "Theme" approach to styling - more default and reusable styles
 -   Separated some utility/helper functions for better code readability
